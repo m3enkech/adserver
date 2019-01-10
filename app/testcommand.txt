@@ -1,0 +1,75 @@
+player.on( 'ended', function() {
+            alert('done*******');
+        setTimeout(function () {
+                ChangeVidList();
+                alert('done*******');
+                timeout();
+            }, 1000);
+        });
+
+/// JS liste
+<script>
+  var busList = {};
+  var i =0;
+  <?php foreach ($buses as $bus): ?>
+      busList['{{$bus->id}}'] = ['{{$bus->busTrajectory}}']; 
+  <?php endforeach ?>
+
+$(function () {
+    changeBusFrame(); //this calls it on load
+    $("bus_list").change(changeBusFrame);
+});
+function changeBusFrame() {
+    var busElement = document.getElementById("bus_list");
+    var busFrame = document.getElementById("bus_frame");
+    var selcBus = busElement.options[busElement.selectedIndex].value;
+    var bus = busList[selcBus];
+    document.getElementById('bus_frame').src = bus;
+}       
+
+</script>
+<div class="row">
+                    <div class="form-group col-sm-6">
+                        {!! Form::label('credit', 'Credit:') !!}
+                        <div class="counter">
+                              <i class="fa fa-code fa-2x"></i>
+                              <h2 id="account_credit" class="timer count-title count-number" data-to="200" data-speed="1500"></h2>
+                               <p class="count-text ">Total Credit for the Event</p>
+                            </div>
+                        </div>
+                    <div class="form-group col-sm-6">
+                    {!! Form::label('bus_id', 'Bus Trajectory:') !!}
+                    <select class="selectpicker form-control" id="bus_list" name="bus_list" data-live-search="true" onchange="changeBusFrame()">
+                            @foreach($buses as $bus) 
+                      <option value="{!! $bus->id !!}">{!! $bus->busNumber.' '.$bus->city !!}</option>
+                            @endforeach
+                    </select>
+
+                        <iframe  height="300px" id="bus_frame" name="search_iframe" src="#" width="100%"></iframe></div>
+</div>
+
+///////////
+        player.on('duringplaylistchange', function() {
+
+          // Remember, this will not trigger a "playlistsorted" event!
+          player.playlist.shuffle();
+        });
+
+        player.on('playlistchange', function() {
+          videojs.log('The playlist was shuffled, so the UI can be updated.');
+        });
+//////
+let resources = []
+    for (const video of videos) {
+        let resource = {
+          sources: [{
+            src: video.src,
+            type: 'video/mp4'
+          }],
+          poster: ''
+        }
+        (resource)
+    }
+    player.playlist(resources)
+
+
